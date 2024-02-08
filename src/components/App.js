@@ -1,17 +1,21 @@
+// App.test.js
 import React from "react";
-import MovieCard from "./MovieCard";
+import { render } from "@testing-library/react";
+import App from "./App";
 
-function App() {
+test("Renders MovieCard component with correct props", () => {
   const title = "Mad Max";
-  const posterURL =
-    "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTn1OTYGz2GDC1XjA9tirh_1Rd571yE5UFIYsmZp4nACMd7CCHM";
   const genresArr = ["Action", "Adventure", "Science Fiction", "Thriller"];
+  const { getByAltText, getByText } = render(<App />);
 
-  return (
-    <div className="App">
-      <MovieCard title={title} genres={genresArr} />
-    </div>
-  );
-}
+  // Check if the MovieCard component renders
+  const movieCardElement = getByAltText(title);
+  expect(movieCardElement).toBeInTheDocument();
 
-export default App;
+  // Check if the title and genres are rendered correctly
+  expect(getByText(title)).toBeInTheDocument();
+  genresArr.forEach(genre => {
+    expect(getByText(genre)).toBeInTheDocument();
+  });
+});
+
